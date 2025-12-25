@@ -45,6 +45,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 1rem 20px;
+    gap: 2rem;
 }
 
 .logo {
@@ -75,6 +76,8 @@ body {
     display: flex;
     list-style: none;
     gap: 2rem;
+    flex: 1;
+    justify-content: center;
 }
 
 .nav-menu a {
@@ -385,6 +388,15 @@ body {
 @media (max-width: 768px) {
     .nav-menu {
         gap: 1rem;
+        font-size: 0.9rem;
+    }
+
+    .nav-menu {
+        flex: 0;
+    }
+
+    .logo-subtitle {
+        display: none;
     }
 
     .hero h1 {

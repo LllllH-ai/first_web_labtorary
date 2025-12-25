@@ -57,6 +57,12 @@ function initForms() {
 
 // 处理论文投稿表单
 function handleSubmissionForm(form) {
+    // 检查登录状态
+    if (!authSystem.isLoggedIn()) {
+        showLoginRequiredModal();
+        return;
+    }
+
     const formData = new FormData(form);
     
     // 验证表单
@@ -82,6 +88,12 @@ function handleSubmissionForm(form) {
 
 // 处理意见反馈表单
 function handleFeedbackForm(form) {
+    // 检查登录状态
+    if (!authSystem.isLoggedIn()) {
+        showLoginRequiredModal();
+        return;
+    }
+
     const formData = new FormData(form);
     
     // 验证表单

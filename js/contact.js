@@ -71,6 +71,12 @@ function validateField(field) {
 
 // 提交联系表单
 function submitContactForm(form) {
+    // 检查登录状态
+    if (!authSystem.isLoggedIn()) {
+        showLoginRequiredModal();
+        return;
+    }
+
     // 验证所有必填字段
     const requiredFields = form.querySelectorAll('[required]');
     let isFormValid = true;
