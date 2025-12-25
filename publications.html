@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文章发表 - AI研究实验室</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/publications.css">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <span class="logo-icon">🔬</span>
+                <span class="logo-text">AI研究实验室</span>
+                <span class="logo-subtitle">大语言模型研究</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="publications.html" class="active">文章发表</a></li>
+                <li><a href="team.html">团队成员</a></li>
+                <li><a href="contact.html">联系我们</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 页面标题 -->
+    <section class="page-header">
+        <div class="container">
+            <h1>文章发表</h1>
+            <p>发布您的研究成果，与全球学者分享创新见解</p>
+        </div>
+    </section>
+
+    <!-- 主要内容区域 -->
+    <div class="container">
+        <div class="publications-wrapper">
+            <!-- 左侧菜单栏 -->
+            <aside class="publications-sidebar">
+                <nav class="publications-menu">
+                    <a href="#" class="menu-item active" data-section="submit">
+                        <span class="menu-icon">📝</span>
+                        <span class="menu-text">在线投稿</span>
+                    </a>
+                    <a href="#" class="menu-item" data-section="requirements">
+                        <span class="menu-icon">📋</span>
+                        <span class="menu-text">写作要求</span>
+                    </a>
+                    <a href="#" class="menu-item" data-section="feedback">
+                        <span class="menu-icon">💬</span>
+                        <span class="menu-text">意见反馈</span>
+                    </a>
+                    <a href="#" class="menu-item" data-section="contact">
+                        <span class="menu-icon">📞</span>
+                        <span class="menu-text">联系我们</span>
+                    </a>
+                    <a href="#" class="menu-item" data-section="download">
+                        <span class="menu-icon">⬇️</span>
+                        <span class="menu-text">附件下载</span>
+                    </a>
+                </nav>
+            </aside>
+
+            <!-- 右侧内容区域 -->
+            <main class="publications-content">
+                <!-- 在线投稿 -->
+                <section id="submit" class="content-section active">
+                    <h2>在线投稿</h2>
+                    <form class="submission-form">
+                        <div class="form-group">
+                            <label for="paper-type">论文类型</label>
+                            <select id="paper-type" name="paper-type" required>
+                                <option value="">请选择论文类型</option>
+                                <option value="research">研究论文</option>
+                                <option value="review">综述论文</option>
+                                <option value="letter">学术快报</option>
+                                <option value="case">案例研究</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="publisher">选择出版社</label>
+                            <select id="publisher" name="publisher" required>
+                                <option value="">请选择目标期刊/出版社</option>
+                                <option value="nature">Nature Machine Intelligence</option>
+                                <option value="neurips">NeurIPS</option>
+                                <option value="icml">ICML</option>
+                                <option value="iclr">ICLR</option>
+                                <option value="iccv">ICCV</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="paper-file">上传论文文件</label>
+                            <div class="file-upload">
+                                <input type="file" id="paper-file" name="paper-file" accept=".pdf,.doc,.docx" required>
+                                <div class="upload-hint">
+                                    <span class="upload-icon">📁</span>
+                                    <p>拖拽或点击选择论文文件</p>
+                                    <p class="hint-text">支持格式：PDF、Word文档（最大 50MB）</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-submit">提交论文</button>
+                    </form>
+
+                    <div class="submission-process">
+                        <h3>凤凰在线投稿流程</h3>
+                        <div class="process-steps">
+                            <div class="step">
+                                <div class="step-number">01</div>
+                                <h4>注册登录</h4>
+                                <p>首次用户需注册账户，登录后可方便地进行投稿，如有问题可联系我们</p>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">02</div>
+                                <h4>完善个人资料</h4>
+                                <p>请完善个人信息，以方便我们后续跟踪和时间联系</p>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">03</div>
+                                <h4>选择作品类型</h4>
+                                <p>我们集团稿件类型包括：文学、社科、古籍整理、学术研究、艺术、儿童文学、医学、农业、建筑、生活、科普等，请根据自己的作品进行判断选择</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 写作要求 -->
+                <section id="requirements" class="content-section">
+                    <h2>写作要求</h2>
+                    <div class="requirements-content">
+                        <div class="requirement-item">
+                            <h3>一、人民社与信息基本要求。</h3>
+                            <ol>
+                                <li>稿件不得含有（《出版管理条例》禁止刊登的内容）</li>
+                                <li>稿件与江苏人民出版社有限公司资业扶贫版面的出版范围一致。</li>
+                                <li>对作品所有者作权使用者作权不侵犯他人著作权；对作品的作品应为经过校组后的定稿，稿件正文、序页、序号、题注、参考文献、索引、后记、图表等所有材料，必须完整、备足。</li>
+                                <li>共稿具有正确的政治方向、价值取向、学术导向。具有鲜明的学术价值或较高的学术价值。有利于建设中国学术适适体系，有利于推动中华优秀传统文化创意性转化和创新性发展。</li>
+                                <li>书稿注重逻辑严谨、理论讨实、表述准确、文风治严谨实、简洁措辞、力成空洗查、创新、务实性。</li>
+                                <li>对于稿件内容、参考文献的选题，应尽量使用经典文献、权威作者，权威期刊来源。注意引文与来源的核准。</li>
+                            </ol>
+                        </div>
+
+                        <div class="requirement-item">
+                            <h3>二、人民社声言、后记要求。</h3>
+                            <ol>
+                                <li>声言、后记与作一求因稿件写作基本要求。</li>
+                                <li>序言、后记非稿件中必备辅文。</li>
+                            </ol>
+                        </div>
+
+                        <div class="requirement-item">
+                            <h3>三、人民社封面及文前文献文的要求。</h3>
+                            <ol>
+                                <li>封面、文前辅文所作使用文字，须符合《中华人民共和国通用语言文字法》要求。</li>
+                                <li>规范使用汉字、书回、辅文字与正文字字相同。</li>
+                                <li>自绞格式为自行设计的拼图。辅文文件不得使用未经授权的字体。</li>
+                            </ol>
+                        </div>
+
+                        <div class="requirement-item">
+                            <h3>四、计量单位要求。</h3>
+                            <p>出版物中的计量单位名称（《中华人民共和国法律活动年单位》和GB3100-3102-86号和单位执行。</p>
+                        </div>
+
+                        <div class="requirement-item">
+                            <h3>五、数学用途的要求。</h3>
+                            <p>书稿数学用途符合《出版物上数字用法》（GB/T 15835-2011）规定。</p>
+                        </div>
+
+                        <div class="requirement-item">
+                            <h3>六、标点符号的要求。</h3>
+                            <p>按照最新的标点符号使用规范进行标点。</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 意见反馈 -->
+                <section id="feedback" class="content-section">
+                    <h2>意见反馈</h2>
+                    <form class="feedback-form">
+                        <div class="form-group">
+                            <label for="feedback-publisher">选择出版社</label>
+                            <select id="feedback-publisher" name="feedback-publisher" required>
+                                <option value="">请选择反馈相关的出版社</option>
+                                <option value="nature">Nature Machine Intelligence</option>
+                                <option value="neurips">NeurIPS</option>
+                                <option value="icml">ICML</option>
+                                <option value="iclr">ICLR</option>
+                                <option value="other">其他</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="feedback-content">请输入您的建议</label>
+                            <textarea id="feedback-content" name="feedback-content" rows="8" placeholder="请详细描述您的意见或建议..." required></textarea>
+                        </div>
+
+                        <div class="form-group checkbox-group">
+                            <label>
+                                <input type="checkbox" name="contact-agree" value="yes">
+                                <span>我同意研究团队联系我讨论此反馈</span>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn-submit">确认提交</button>
+                    </form>
+                </section>
+
+                <!-- 联系我们 -->
+                <section id="contact" class="content-section">
+                    <h2>联系我们</h2>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <h3>📍 地址</h3>
+                            <p>中国 北京市 清华大学 计算机科学与技术系</p>
+                        </div>
+
+                        <div class="contact-item">
+                            <h3>📧 电子邮箱</h3>
+                            <p><a href="mailto:publications@ailab.org">publications@ailab.org</a></p>
+                        </div>
+
+                        <div class="contact-item">
+                            <h3>📞 联系电话</h3>
+                            <p>+86-10-XXXX-XXXX</p>
+                        </div>
+
+                        <div class="contact-item">
+                            <h3>⏰ 工作时间</h3>
+                            <p>周一至周五 9:00 - 17:00</p>
+                        </div>
+
+                        <div class="contact-item">
+                            <h3>👤 论文联系人</h3>
+                            <p>
+                                <strong>Dr. Sarah Chen</strong><br>
+                                publications@ailab.org<br>
+                                +86-10-XXXX-XXXX
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 附件下载 -->
+                <section id="download" class="content-section">
+                    <h2>附件下载</h2>
+                    <div class="download-list">
+                        <div class="download-item">
+                            <div class="download-icon">📄</div>
+                            <div class="download-info">
+                                <h4>论文投稿模板</h4>
+                                <p>标准的AI研究论文模板，包含所有必需的格式要求</p>
+                                <span class="file-size">PDF • 2.5 MB</span>
+                            </div>
+                            <a href="#" class="download-btn">下载</a>
+                        </div>
+
+                        <div class="download-item">
+                            <div class="download-icon">📄</div>
+                            <div class="download-info">
+                                <h4>版权声明表格</h4>
+                                <p>投稿时需要填写和提交的版权声明文件</p>
+                                <span class="file-size">DOCX • 1.2 MB</span>
+                            </div>
+                            <a href="#" class="download-btn">下载</a>
+                        </div>
+
+                        <div class="download-item">
+                            <div class="download-icon">📄</div>
+                            <div class="download-info">
+                                <h4>作者指南</h4>
+                                <p>详细的投稿流程指南和常见问题解答</p>
+                                <span class="file-size">PDF • 3.1 MB</span>
+                            </div>
+                            <a href="#" class="download-btn">下载</a>
+                        </div>
+
+                        <div class="download-item">
+                            <div class="download-icon">📄</div>
+                            <div class="download-info">
+                                <h4>参考文献格式说明</h4>
+                                <p>IEEE和Bibtex两种格式的详细说明</p>
+                                <span class="file-size">PDF • 1.8 MB</span>
+                            </div>
+                            <a href="#" class="download-btn">下载</a>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 AI研究实验室. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">隐私政策</a>
+                <a href="#">使用条款</a>
+                <a href="#">网站地图</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="js/publications.js"></script>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>联系我们 - AI研究实验室</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/contact.css">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <span class="logo-icon">🔬</span>
+                <span class="logo-text">AI研究实验室</span>
+                <span class="logo-subtitle">大语言模型研究</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">首页</a></li>
+                <li><a href="publications.html">文章发表</a></li>
+                <li><a href="team.html">团队成员</a></li>
+                <li><a href="contact.html" class="active">联系我们</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 页面标题 -->
+    <section class="page-header">
+        <div class="container">
+            <h1>联系我们</h1>
+            <p>有任何疑问或想要合作？我们期待您的来信</p>
+        </div>
+    </section>
+
+    <!-- 主要内容 -->
+    <div class="container">
+        <div class="contact-wrapper">
+            <!-- 左侧：联系表单 -->
+            <section class="contact-form-section">
+                <div class="form-header">
+                    <h2>发送消息</h2>
+                    <p>请填写下方表单，我们会在24小时内回复您</p>
+                </div>
+
+                <form class="contact-form" id="contactForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">姓名</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">邮箱</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">联系电话</label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject">主题</label>
+                        <select id="subject" name="subject" required>
+                            <option value="">请选择咨询主题</option>
+                            <option value="collaboration">合作咨询</option>
+                            <option value="research">研究咨询</option>
+                            <option value="publication">论文发表</option>
+                            <option value="visit">访问参观</option>
+                            <option value="recruitment">人才招聘</option>
+                            <option value="other">其他问题</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">消息内容</label>
+                        <textarea id="message" name="message" rows="6" placeholder="请详细描述您的问题或需求..." required></textarea>
+                    </div>
+
+                    <div class="form-group checkbox-group">
+                        <label>
+                            <input type="checkbox" name="agree" value="yes" required>
+                            <span>我同意隐私政策并接收回复邮件</span>
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn-submit">发送消息</button>
+                </form>
+            </section>
+
+            <!-- 右侧：联系信息 -->
+            <aside class="contact-info-section">
+                <!-- 快速联系 -->
+                <div class="info-card">
+                    <h3 class="info-title">快速联系</h3>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">📧</div>
+                        <div class="info-content">
+                            <h4>电子邮箱</h4>
+                            <p><a href="mailto:contact@ailab.org">contact@ailab.org</a></p>
+                            <p class="small-text">论文投稿: publications@ailab.org</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon">📞</div>
+                        <div class="info-content">
+                            <h4>联系电话</h4>
+                            <p><a href="tel:+86-10-62737800">+86-10-62737800</a></p>
+                            <p class="small-text">工作时间：周一至周五 9:00-17:00</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon">📍</div>
+                        <div class="info-content">
+                            <h4>办公地址</h4>
+                            <p>清华大学计算机科学与技术系</p>
+                            <p class="small-text">北京市海淀区清华园1号</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon">⏰</div>
+                        <div class="info-content">
+                            <h4>工作时间</h4>
+                            <p>周一至周五: 9:00 - 17:00</p>
+                            <p class="small-text">周末及节假日休息</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 主要联系人 -->
+                <div class="info-card">
+                    <h3 class="info-title">主要联系人</h3>
+                    
+                    <div class="contact-person">
+                        <div class="person-avatar">👩‍💼</div>
+                        <div class="person-info">
+                            <h4>Dr. Sarah Chen</h4>
+                            <p class="person-title">课题组组长</p>
+                            <p class="person-email"><a href="mailto:sarah.chen@ailab.org">sarah.chen@ailab.org</a></p>
+                        </div>
+                    </div>
+
+                    <div class="contact-person">
+                        <div class="person-avatar">👨‍💼</div>
+                        <div class="person-info">
+                            <h4>Prof. Michael Zhang</h4>
+                            <p class="person-title">副组长</p>
+                            <p class="person-email"><a href="mailto:michael.zhang@ailab.org">michael.zhang@ailab.org</a></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 社交媒体 -->
+                <div class="info-card">
+                    <h3 class="info-title">关注我们</h3>
+                    <div class="social-links">
+                        <a href="#" class="social-link" title="GitHub">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 . .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.054 12.054 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link" title="Twitter">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M23.953 4.57a10 10 0 002.856-3.91 9.96 9.96 0 01-2.836.856 4.958 4.958 0 002.165-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link" title="LinkedIn">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.475-2.236-1.986-2.236-1.081 0-1.722.722-2.004 1.418-.103.249-.129.597-.129.945v5.442h-3.554s.044-8.789 0-9.707h3.554v1.375c.427-.659 1.191-1.595 2.897-1.595 2.117 0 3.704 1.382 3.704 4.342v5.585zM5.337 9.433c-1.144 0-1.915-.762-1.915-1.715 0-.952.77-1.715 1.959-1.715 1.188 0 1.914.763 1.939 1.715 0 .953-.751 1.715-1.983 1.715zm1.946 11.019H3.391V9.746h3.892v10.706zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link" title="WeChat">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9.101 21.757c-.899 0-1.89-.225-2.927-.682-1.501.43-3.374.898-5.135 1.077a.506.506 0 01-.493-.754c.573-1.431 1.531-3.793 1.731-5.396C.879 13.55 0 11.701 0 9.596c0-5.281 4.765-9.595 10.618-9.595 5.254 0 9.766 3.362 10.38 7.747.035.284.052.575.052.873 0 5.281-4.765 9.595-10.618 9.595l-.331-.063zM7 8a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm5.5 0a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 常见问题 -->
+                <div class="info-card">
+                    <h3 class="info-title">常见问题</h3>
+                    <div class="faq-list">
+                        <details class="faq-item">
+                            <summary>如何投稿论文？</summary>
+                            <p>请访问我们的"文章发表"页面，按照投稿流程在线提交您的论文。详细的写作要求和投稿指南可在该页面查阅。</p>
+                        </details>
+                        <details class="faq-item">
+                            <summary>加入团队需要什么条件？</summary>
+                            <p>我们欢迎具有AI研究背景的博士后、研究员和学生加入。请提交简历和研究兴趣说明至人才招聘邮箱。</p>
+                        </details>
+                        <details class="faq-item">
+                            <summary>如何访问实验室？</summary>
+                            <p>欢迎访问！请提前至少一周通过邮件或电话告知，我们会安排专人为您介绍实验室和研究成果。</p>
+                        </details>
+                        <details class="faq-item">
+                            <summary>合作研究流程是什么？</summary>
+                            <p>请先通过邮件或电话说明合作意向，我们会根据您的需求制定合作方案并进一步沟通具体细节。</p>
+                        </details>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 AI研究实验室. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">隐私政策</a>
+                <a href="#">使用条款</a>
+                <a href="#">网站地图</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="js/contact.js"></script>
+</body>
+</html>
