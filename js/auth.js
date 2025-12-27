@@ -1,6 +1,7 @@
-// 认证系统 - 用户注册、登录、登出功能
+// API 配置
+const API_BASE_URL = 'http://localhost:3001/api';
 
-// 用户数据存储（使用localStorage模拟数据库）
+// 认证系统 - 连接后端 API
 class AuthSystem {
     constructor() {
         this.currentUser = this.getCurrentUser();
@@ -14,92 +15,98 @@ class AuthSystem {
 
     // 获取当前登录用户
     getCurrentUser() {
+        const token = localStorage.getItem('authToken');
         const userStr = localStorage.getItem('currentUser');
-        return userStr ? JSON.parse(userStr) : null;
+        if (token && userStr) {
+            return JSON.parse(userStr);
+        }
+        return null;
     }
 
     // 设置当前用户
-    setCurrentUser(user) {
+    setCurrentUser(user, token) {
         this.currentUser = user;
-        if (user) {
+        if (user && token) {
             localStorage.setItem('currentUser', JSON.stringify(user));
+            localStorage.setItem('authToken', token);
         } else {
             localStorage.removeItem('currentUser');
+            localStorage.removeItem('authToken');
         }
         this.updateUI();
+    }
+
+    // 获取认证token
+    getToken() {
+        return localStorage.getItem('authToken');
     }
 
     // 检查用户是否已登录
     isLoggedIn() {
-        return this.currentUser !== null;
+        return this.currentUser !== null && this.getToken() !== null;
     }
 
-    // 获取所有用户（从localStorage）
-    getAllUsers() {
-        const usersStr = localStorage.getItem('users');
-        return usersStr ? JSON.parse(usersStr) : [];
-    }
+    // 注册新用户（调用后端API）
+    async register(username, email, password) {
+        try {
+            const response = await fetch(`${API_BASE_URL}/auth/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, email, password }),
+            });
 
-    // 保存所有用户
-    saveAllUsers(users) {
-        localStorage.setItem('users', JSON.stringify(users));
-    }
+            const data = await response.json();
 
-    // 注册新用户
-    register(username, email, password) {
-        const users = this.getAllUsers();
+            if (!response.ok) {
+                throw new Error(data.error || '注册失败');
+            }
 
-        // 检查用户名是否已存在
-        if (users.find(u => u.username === username)) {
-            return { success: false, message: '用户名已存在' };
+            // 注册成功，保存token和用户信息
+            this.setCurrentUser(data.user, data.token);
+            return { success: true, message: '注册成功！' };
+        } catch (error) {
+            console.error('注册错误:', error);
+            return { success: false, message: error.message || '注册失败，请稍后重试' };
         }
-
-        // 检查邮箱是否已存在
-        if (users.find(u => u.email === email)) {
-            return { success: false, message: '邮箱已被注册' };
-        }
-
-        // 创建新用户
-        const newUser = {
-            id: Date.now(),
-            username,
-            email,
-            password, // 实际应用中应该加密
-            createdAt: new Date().toISOString()
-        };
-
-        users.push(newUser);
-        this.saveAllUsers(users);
-
-        return { success: true, message: '注册成功！' };
     }
 
-    // 用户登录
-    login(usernameOrEmail, password) {
-        const users = this.getAllUsers();
+    // 用户登录（调用后端API）
+    async login(email, password) {
+        try {
+            const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }),
+            });
 
-        // 查找用户
-        const user = users.find(u => 
-            (u.username === usernameOrEmail || u.email === usernameOrEmail) && 
-            u.password === password
-        );
+            const data = await response.json();
 
-        if (!user) {
-            return { success: false, message: '用户名/邮箱或密码错误' };
+            if (!response.ok) {
+                throw new Error(data.error || '登录失败');
+            }
+
+            // 登录成功，保存token和用户信息
+            this.setCurrentUser(data.user, data.token);
+            return { success: true, message: '登录成功！' };
+        } catch (error) {
+            console.error('登录错误:', error);
+            return { success: false, message: error.message || '登录失败，请检查邮箱和密码' };
         }
-
-        // 设置当前用户（不包含密码）
-        const { password: _, ...userWithoutPassword } = user;
-        this.setCurrentUser(userWithoutPassword);
-
-        return { success: true, message: '登录成功！', user: userWithoutPassword };
     }
 
     // 用户登出
     logout() {
-        this.setCurrentUser(null);
-        this.updateUI();
+        this.setCurrentUser(null, null);
         showNotification('已成功登出', 'success');
+    }
+
+    // 获取认证请求头
+    getAuthHeaders() {
+        const token = this.getToken();
+        return {
+            'Content-Type': 'application/json',
+            'Authorization': token ? `Bearer ${token}` : '',
+        };
     }
 
     // 更新UI显示
@@ -129,24 +136,23 @@ class AuthSystem {
             if (logoutBtn) {
                 logoutBtn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    this.logout();
+                    if (confirm('确定要退出登录吗？')) {
+                        this.logout();
+                    }
                 });
             }
 
-            // 绑定其他链接（可选）
-            const profileLink = document.getElementById('profileLink');
-            if (profileLink) {
-                profileLink.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    showNotification('个人资料功能开发中...', 'info');
+            // 绑定下拉菜单
+            const userInfo = userSection.querySelector('.user-info');
+            const dropdownMenu = userSection.querySelector('.dropdown-menu');
+            if (userInfo && dropdownMenu) {
+                userInfo.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    dropdownMenu.classList.toggle('show');
                 });
-            }
 
-            const settingsLink = document.getElementById('settingsLink');
-            if (settingsLink) {
-                settingsLink.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    showNotification('账号设置功能开发中...', 'info');
+                document.addEventListener('click', () => {
+                    dropdownMenu.classList.remove('show');
                 });
             }
         } else {
@@ -174,15 +180,6 @@ class AuthSystem {
                 this.updateUI();
             }
         });
-    }
-
-    // 检查登录状态（供表单提交使用）
-    requireLogin(callback) {
-        if (this.isLoggedIn()) {
-            callback();
-        } else {
-            showLoginRequiredModal(callback);
-        }
     }
 }
 
@@ -235,13 +232,13 @@ function createAuthModal() {
                 <!-- 登录表单 -->
                 <form id="loginForm" class="auth-form active">
                     <div class="form-group">
-                        <label for="loginUsername">用户名或邮箱</label>
-                        <input type="text" id="loginUsername" name="username" required>
-                        <span class="error-message" id="loginUsernameError"></span>
+                        <label for="loginEmail">邮箱</label>
+                        <input type="email" id="loginEmail" name="email" required placeholder="请输入邮箱">
+                        <span class="error-message" id="loginEmailError"></span>
                     </div>
                     <div class="form-group password-toggle">
                         <label for="loginPassword">密码</label>
-                        <input type="password" id="loginPassword" name="password" required>
+                        <input type="password" id="loginPassword" name="password" required placeholder="请输入密码">
                         <button type="button" class="toggle-password-btn" onclick="togglePassword('loginPassword')">👁️</button>
                         <span class="error-message" id="loginPasswordError"></span>
                     </div>
@@ -259,23 +256,23 @@ function createAuthModal() {
                 <form id="registerForm" class="auth-form">
                     <div class="form-group">
                         <label for="registerUsername">用户名</label>
-                        <input type="text" id="registerUsername" name="username" required minlength="3">
+                        <input type="text" id="registerUsername" name="username" required minlength="2" placeholder="请输入用户名（至少2个字符）">
                         <span class="error-message" id="registerUsernameError"></span>
                     </div>
                     <div class="form-group">
                         <label for="registerEmail">邮箱</label>
-                        <input type="email" id="registerEmail" name="email" required>
+                        <input type="email" id="registerEmail" name="email" required placeholder="请输入邮箱">
                         <span class="error-message" id="registerEmailError"></span>
                     </div>
                     <div class="form-group password-toggle">
                         <label for="registerPassword">密码</label>
-                        <input type="password" id="registerPassword" name="password" required minlength="6">
+                        <input type="password" id="registerPassword" name="password" required minlength="6" placeholder="请输入密码（至少6个字符）">
                         <button type="button" class="toggle-password-btn" onclick="togglePassword('registerPassword')">👁️</button>
                         <span class="error-message" id="registerPasswordError"></span>
                     </div>
                     <div class="form-group password-toggle">
                         <label for="registerConfirmPassword">确认密码</label>
-                        <input type="password" id="registerConfirmPassword" name="confirmPassword" required>
+                        <input type="password" id="registerConfirmPassword" name="confirmPassword" required placeholder="请再次输入密码">
                         <button type="button" class="toggle-password-btn" onclick="togglePassword('registerConfirmPassword')">👁️</button>
                         <span class="error-message" id="registerConfirmPasswordError"></span>
                     </div>
@@ -339,30 +336,34 @@ function switchAuthTab(tabName) {
 function bindAuthForms(modal) {
     // 登录表单
     const loginForm = modal.querySelector('#loginForm');
-    loginForm.addEventListener('submit', (e) => {
+    loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        handleLogin(loginForm);
+        await handleLogin(loginForm);
     });
 
     // 注册表单
     const registerForm = modal.querySelector('#registerForm');
-    registerForm.addEventListener('submit', (e) => {
+    registerForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        handleRegister(registerForm);
+        await handleRegister(registerForm);
     });
 }
 
 // 处理登录
-function handleLogin(form) {
-    const username = form.querySelector('#loginUsername').value.trim();
+async function handleLogin(form) {
+    const email = form.querySelector('#loginEmail').value.trim();
     const password = form.querySelector('#loginPassword').value;
 
-    if (!username || !password) {
+    if (!email || !password) {
         showNotification('请填写所有字段', 'error');
         return;
     }
 
-    const result = authSystem.login(username, password);
+    const submitBtn = form.querySelector('.submit-btn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = '登录中...';
+
+    const result = await authSystem.login(email, password);
 
     if (result.success) {
         showNotification(result.message, 'success');
@@ -371,10 +372,13 @@ function handleLogin(form) {
     } else {
         showNotification(result.message, 'error');
     }
+
+    submitBtn.disabled = false;
+    submitBtn.textContent = '登录';
 }
 
 // 处理注册
-function handleRegister(form) {
+async function handleRegister(form) {
     const username = form.querySelector('#registerUsername').value.trim();
     const email = form.querySelector('#registerEmail').value.trim();
     const password = form.querySelector('#registerPassword').value;
@@ -387,8 +391,8 @@ function handleRegister(form) {
         return;
     }
 
-    if (username.length < 3) {
-        showNotification('用户名至少3个字符', 'error');
+    if (username.length < 2) {
+        showNotification('用户名至少2个字符', 'error');
         return;
     }
 
@@ -407,15 +411,22 @@ function handleRegister(form) {
         return;
     }
 
-    const result = authSystem.register(username, email, password);
+    const submitBtn = form.querySelector('.submit-btn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = '注册中...';
+
+    const result = await authSystem.register(username, email, password);
 
     if (result.success) {
-        showNotification(result.message + ' 请登录', 'success');
+        showNotification(result.message, 'success');
+        closeAuthModal();
         form.reset();
-        switchAuthTab('login');
     } else {
         showNotification(result.message, 'error');
     }
+
+    submitBtn.disabled = false;
+    submitBtn.textContent = '注册';
 }
 
 // 切换密码可见性
@@ -433,7 +444,7 @@ function togglePassword(inputId) {
 }
 
 // 显示登录要求模态框
-function showLoginRequiredModal(callback) {
+function showLoginRequiredModal() {
     let modal = document.getElementById('loginRequiredModal');
     
     if (!modal) {
@@ -460,9 +471,6 @@ function showLoginRequiredModal(callback) {
             }
         });
     }
-
-    // 保存回调函数
-    modal.dataset.callback = callback ? 'pending' : '';
     
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -483,64 +491,63 @@ function goToLogin() {
     openAuthModal('login');
 }
 
-// 通知函数（如果不存在则创建）
-if (typeof showNotification === 'undefined') {
-    function showNotification(message, type = 'info') {
-        const notification = document.createElement('div');
-        notification.className = `notification notification-${type}`;
-        notification.textContent = message;
-        
-        const style = document.createElement('style');
-        style.textContent = `
-            .notification {
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                padding: 1rem 1.5rem;
-                border-radius: 6px;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-                z-index: 10002;
-                animation: slideIn 0.3s ease-out;
-            }
-            
-            .notification-success {
-                background: #4caf50;
-                color: white;
-            }
-            
-            .notification-error {
-                background: #f44336;
-                color: white;
-            }
-            
-            .notification-info {
-                background: #2196f3;
-                color: white;
-            }
-            
-            @keyframes slideIn {
-                from {
-                    transform: translateX(400px);
-                    opacity: 0;
-                }
-                to {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
-            }
-        `;
-        
-        if (!document.querySelector('style[data-notification]')) {
-            style.setAttribute('data-notification', 'true');
-            document.head.appendChild(style);
+// 通知函数
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.textContent = message;
+    
+    const style = document.createElement('style');
+    style.textContent = `
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 10002;
+            animation: slideIn 0.3s ease-out;
+            font-size: 0.95rem;
         }
         
-        document.body.appendChild(notification);
+        .notification-success {
+            background: #4caf50;
+            color: white;
+        }
         
-        setTimeout(() => {
-            notification.remove();
-        }, 3000);
+        .notification-error {
+            background: #f44336;
+            color: white;
+        }
+        
+        .notification-info {
+            background: #2196f3;
+            color: white;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    `;
+    
+    if (!document.querySelector('style[data-notification]')) {
+        style.setAttribute('data-notification', 'true');
+        document.head.appendChild(style);
     }
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.remove();
+    }, 3000);
 }
 
 // 导出全局变量和函数
@@ -548,5 +555,7 @@ window.authSystem = authSystem;
 window.openAuthModal = openAuthModal;
 window.closeAuthModal = closeAuthModal;
 window.togglePassword = togglePassword;
+window.showLoginRequiredModal = showLoginRequiredModal;
 window.closeLoginRequiredModal = closeLoginRequiredModal;
 window.goToLogin = goToLogin;
+window.showNotification = showNotification;

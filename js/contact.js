@@ -70,13 +70,7 @@ function validateField(field) {
 }
 
 // 提交联系表单
-function submitContactForm(form) {
-    // 检查登录状态
-    if (!authSystem.isLoggedIn()) {
-        showLoginRequiredModal();
-        return;
-    }
-
+async function submitContactForm(form) {
     // 验证所有必填字段
     const requiredFields = form.querySelectorAll('[required]');
     let isFormValid = true;
@@ -95,33 +89,50 @@ function submitContactForm(form) {
     // 获取表单数据
     const formData = new FormData(form);
     const data = {
-        name: formData.get('name'),
-        email: formData.get('email'),
-        phone: formData.get('phone'),
         subject: formData.get('subject'),
-        message: formData.get('message'),
-        agree: formData.get('agree')
+        body: `姓名: ${formData.get('name')}\n邮箱: ${formData.get('email')}\n电话: ${formData.get('phone')}\n\n${formData.get('message')}`,
+        tags: ['contact', formData.get('subject')]
     };
 
-    console.log('提交的联系表单数据:', data);
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = '发送中...';
 
-    // 模拟发送请求
-    // 在实际应用中，这里应该是一个真实的API调用
-    // fetch('/api/contact', { method: 'POST', body: JSON.stringify(data) })
+    try {
+        // 调用后端 API（不需要登录）
+        const response = await fetch('http://localhost:3001/api/messages', {
+            method: 'POST',
+            headers: authSystem.isLoggedIn() ? authSystem.getAuthHeaders() : { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+        });
 
-    // 显示成功消息
-    showNotification('感谢您的消息！我们会在24小时内回复您。', 'success');
+        const result = await response.json();
 
-    // 重置表单
-    form.reset();
-    
-    // 清除所有样式
-    form.querySelectorAll('input, select, textarea').forEach(field => {
-        field.style.borderColor = '';
-    });
+        if (!response.ok) {
+            throw new Error(result.error || '发送失败');
+        }
 
-    // 可选：显示成功状态
-    displayFormSuccess();
+        // 显示成功消息
+        showNotification('感谢您的消息！我们会在24小时内回复您。', 'success');
+
+        // 重置表单
+        form.reset();
+        
+        // 清除所有样式
+        form.querySelectorAll('input, select, textarea').forEach(field => {
+            field.style.borderColor = '';
+        });
+
+        // 显示成功状态
+        displayFormSuccess();
+    } catch (error) {
+        console.error('发送错误:', error);
+        showNotification(error.message || '发送失败，请稍后重试', 'error');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+    }
 }
 
 // 显示表单成功状态

@@ -56,7 +56,7 @@ function initForms() {
 }
 
 // 处理论文投稿表单
-function handleSubmissionForm(form) {
+async function handleSubmissionForm(form) {
     // 检查登录状态
     if (!authSystem.isLoggedIn()) {
         showLoginRequiredModal();
@@ -71,29 +71,50 @@ function handleSubmissionForm(form) {
         return;
     }
 
-    // 这里可以添加实际的提交逻辑（发送到服务器）
-    console.log('投稿数据:', {
-        paperType: formData.get('paper-type'),
-        publisher: formData.get('publisher'),
-        file: formData.get('paper-file').name
-    });
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = '提交中...';
 
-    // 显示成功消息
-    showNotification('感谢您的投稿！我们会在5个工作日内审核您的论文。', 'success');
-    
-    // 重置表单
-    form.reset();
-    document.querySelector('.file-upload').classList.remove('has-file');
+    try {
+        // 调用后端 API
+        const response = await fetch('http://localhost:3001/api/papers', {
+            method: 'POST',
+            headers: authSystem.getAuthHeaders(),
+            body: JSON.stringify({
+                title: formData.get('paper-title') || '未命名论文',
+                paperType: formData.get('paper-type'),
+                publisher: formData.get('publisher'),
+                abstract: formData.get('paper-abstract') || '',
+                fileUrl: formData.get('paper-file').name, // 实际应该上传文件并返回URL
+                status: 'submitted'
+            }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || '投稿失败');
+        }
+
+        // 显示成功消息
+        showNotification('感谢您的投稿！我们会在5个工作日内审核您的论文。', 'success');
+        
+        // 重置表单
+        form.reset();
+        const fileUpload = document.querySelector('.file-upload');
+        if (fileUpload) fileUpload.classList.remove('has-file');
+    } catch (error) {
+        console.error('投稿错误:', error);
+        showNotification(error.message || '投稿失败，请稍后重试', 'error');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+    }
 }
 
 // 处理意见反馈表单
-function handleFeedbackForm(form) {
-    // 检查登录状态
-    if (!authSystem.isLoggedIn()) {
-        showLoginRequiredModal();
-        return;
-    }
-
+async function handleFeedbackForm(form) {
     const formData = new FormData(form);
     
     // 验证表单
@@ -102,15 +123,38 @@ function handleFeedbackForm(form) {
         return;
     }
 
-    // 这里可以添加实际的提交逻辑
-    console.log('反馈数据:', {
-        publisher: formData.get('feedback-publisher'),
-        feedback: formData.get('feedback-content'),
-        contact: formData.get('contact-agree') ? '同意' : '不同意'
-    });
+    const submitBtn = form.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = '提交中...';
 
-    showNotification('感谢您的反馈！我们将认真考虑您的建议。', 'success');
-    form.reset();
+    try {
+        // 调用后端 API（不需要登录）
+        const response = await fetch('http://localhost:3001/api/feedback', {
+            method: 'POST',
+            headers: authSystem.isLoggedIn() ? authSystem.getAuthHeaders() : { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                publisher: formData.get('feedback-publisher'),
+                message: formData.get('feedback-content'),
+                contactEmail: formData.get('feedback-email') || null
+            }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || '提交失败');
+        }
+
+        showNotification('感谢您的反馈！我们将认真考虑您的建议。', 'success');
+        form.reset();
+    } catch (error) {
+        console.error('反馈错误:', error);
+        showNotification(error.message || '提交失败，请稍后重试', 'error');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+    }
 }
 
 // 初始化文件上传
